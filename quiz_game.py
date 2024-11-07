@@ -8,10 +8,10 @@ class Quiz:
     def add_question(self, question, answer):
         self.questions.append((question, answer))
 
-    def take_quiz(self, username):
+    def take_quiz(self, username, num_questions):
         score = 0
 
-        questions_asked = random.sample(self.questions, len(self.questions))
+        questions_asked = random.sample(self.questions, min(num_questions, len(self.questions)))
         for i, (question, answer) in enumerate(questions_asked, 1):
             while True:
                 try:
@@ -28,15 +28,17 @@ class Quiz:
                 except ValueError as e:
                     print(e)
 
-        print(f"\n{username}, you scored {score} out of {len(self.questions)}")
+        print(f"\n{username}, you scored {score} out of {len(questions_asked)}")
         self.scores[username] = score
 
     def display_results(self):
         print("\n Quiz Results")
         for user, score in self.scores.items():
-            print(f"{user}: {score} points")
+            point_singular = "point" if score == 1 else "points"
+            print(f"{user}: {score} {point_singular}")
         highest_scorer = max(self.scores, key=self.scores.get)
         average_score = sum(self.scores.values()) / len(self.scores)
+
         print(f"\nHighest scorer: {highest_scorer} with {self.scores[highest_scorer]} points!")
         print(f"Average score of all users: {average_score:.2f}")
 
@@ -55,12 +57,22 @@ def main():
     quiz.add_question("On the London Tube network, which is the only station to begin with the letter 'I'?", "Ickenham")
 
     while True:
+        try:
+            num_questions = int(input(f"How many questions would you like to answer? (Max: {len(quiz.questions)}): "))
+            if num_questions < 1 or num_questions > len(quiz.questions):
+                print(f"Please enter a number between 1 and {len(quiz.questions)}.")
+                continue
+            break
+        except ValueError:
+            print("Invalid. Please enter a valid number.")
+
+    while True:
         username = input("\nEnter your name: ").strip()
         if username == "":
             print("Name cannot be empty. Please enter a name")
             continue
 
-        quiz.take_quiz(username)
+        quiz.take_quiz(username, num_questions)
 
         continue_quiz = input("\nDoes anyone else want to play the quiz? (yes/no): ").strip().lower()
         if continue_quiz != "yes":
