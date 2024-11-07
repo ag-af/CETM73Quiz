@@ -1,4 +1,5 @@
-![Logo](./images/geography.png)
+<img src="./images/geography.png" alt="Quiz Game Logo" width="200" height="200"/>
+
 # CETM73 Geography Quiz
 
 ## **Overview**
