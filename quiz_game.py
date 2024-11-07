@@ -28,19 +28,23 @@ class Quiz:
                 except ValueError as e:
                     print(e)
 
-        print(f"\n{username}, you scored {score} out of {len(questions_asked)}")
-        self.scores[username] = score
+        percentage = (score / len(questions_asked)) * 100
+        print(f"\n{username}, you scored {score} out of {len(questions_asked)} ({percentage:.2f}%)")
+        self.scores[username] = (score, percentage)
 
     def display_results(self):
         print("\n Quiz Results")
-        for user, score in self.scores.items():
-            point_singular = "point" if score == 1 else "points"
-            print(f"{user}: {score} {point_singular}")
-        highest_scorer = max(self.scores, key=self.scores.get)
-        average_score = sum(self.scores.values()) / len(self.scores)
+        for user, (score, percentage) in self.scores.items():
+            point = "point" if score == 1 else "points"
+            print(f"{user}: {score} {point} ({percentage:.2f}%)")
+        highest_scorer = max(self.scores, key=lambda user: self.scores[user][0])
+        highest_score, highest_percentage = self.scores[highest_scorer]
+        highest_point = "point" if highest_score == 1 else "points"
+        average_score = sum(score for score, _ in self.scores.values()) / len(self.scores)
+        average_percentage = sum(percentage for _, percentage in self.scores.values()) / len(self.scores)
 
-        print(f"\nHighest scorer: {highest_scorer} with {self.scores[highest_scorer]} points!")
-        print(f"Average score of all users: {average_score:.2f}")
+        print(f"\nHighest scorer: {highest_scorer} with {highest_score} {highest_point} ({highest_percentage:.2f}%)")
+        print(f"Average score of all users: {average_score:.2f} points ({average_percentage:.2f}%)")
 
 
 def main():
