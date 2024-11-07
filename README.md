@@ -1,3 +1,4 @@
+![Logo](./images/geography.png)
 # CETM73 Geography Quiz
 
 ## **Overview**
