@@ -31,3 +31,13 @@ class Quiz:
 
                             print(f"\n{username}, you scored {score} out of {len(self.questions)}")
                             self.scores[username] = score
+
+                            def display_results(self):
+                                print("\n Quiz Results")
+                                for user, score in self.scores.items():
+                                    print(f"{user}: {score} points")
+                                    highest_scorer = max(self.scores, key=self.scores.get)
+                                    average_score = sum(self.scores.values()) / len(self.scores)
+
+                                    print(f"\n Highest scorer: {highest_scorer} with {self.scores[highest_scorer]} points!")
+                                    print(f"Average score of all users: {average_score:.2f}")
